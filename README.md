@@ -38,12 +38,22 @@ Nginx and service templates are isolated for `/feisiomark` path to avoid impact 
 ## Stage 1 quickstart (first real Mac)
 
 1. Ensure VPS is deployed and healthy:
-	- `https://feisio.com/feisiomark/health`
-2. On the Mac that has Antinote:
-	- optional if configured on server: `export SYNCANTINOTE_ENROLLMENT_KEY="..."`
-	- run: `./scripts/install_helper_mac.sh`
-3. Verify helper logs:
-	- `~/Library/Logs/Syncantinote/helper.out.log`
-	- `~/Library/Logs/Syncantinote/helper.err.log`
+  - `https://feisio.com/feisiomark/health`
+2. Open the hosted installer page:
+  - `https://feisio.com/syncantinote/`
+3. Download and run `SyncantinoteInstaller.command`.
+4. Enter the enrollment key when prompted.
+5. Verify helper logs:
+  - `~/Library/Logs/Syncantinote/helper.out.log`
+  - `~/Library/Logs/Syncantinote/helper.err.log`
 
-This bootstrap performs device enrollment, writes local helper config, installs a launch agent, and triggers an immediate one-shot sync push.
+Terminal alternative:
+
+- `curl -fsSL https://feisio.com/syncantinote/install.command -o ~/Downloads/SyncantinoteInstaller.command && chmod +x ~/Downloads/SyncantinoteInstaller.command && ~/Downloads/SyncantinoteInstaller.command`
+
+Manual repository-based fallback:
+
+- optional if configured on server: `export SYNCANTINOTE_ENROLLMENT_KEY="..."`
+- run: `./scripts/install_helper_mac.sh`
+
+This bootstrap downloads the helper, performs device enrollment, writes local helper config, installs `Syncantinote.app`, installs a launch agent, and triggers an immediate one-shot sync push.

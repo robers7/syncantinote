@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Syncantinote macOS Installer</title>
+  <style>
+    :root {
+      --bg: #0c1218;
+      --panel: #151f2a;
+      --text: #eef4fb;
+      --muted: #9fb1c4;
+      --accent: #48d597;
+      --accent-strong: #21b87b;
+      --border: #2a3a4b;
+    }
+    body {
+      margin: 0;
+      font-family: "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      background: radial-gradient(circle at top right, #1e2f43 0%, var(--bg) 45%);
+      color: var(--text);
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+    .card {
+      width: min(760px, 100%);
+      background: linear-gradient(180deg, #1a2532 0%, var(--panel) 100%);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 28px;
+      box-shadow: 0 18px 44px rgba(0, 0, 0, 0.35);
+    }
+    h1 {
+      margin: 0 0 10px;
+      font-size: 30px;
+      line-height: 1.2;
+      letter-spacing: 0.2px;
+    }
+    p {
+      color: var(--muted);
+      line-height: 1.55;
+      margin: 10px 0;
+    }
+    .cta {
+      display: inline-block;
+      margin: 14px 0 8px;
+      background: linear-gradient(180deg, var(--accent), var(--accent-strong));
+      color: #052114;
+      font-weight: 700;
+      text-decoration: none;
+      padding: 12px 18px;
+      border-radius: 10px;
+    }
+    .code {
+      margin-top: 14px;
+      background: #0f1822;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      overflow-x: auto;
+      color: #c7deff;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    ol {
+      color: var(--muted);
+      padding-left: 20px;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>Syncantinote Installer for macOS</h1>
+    <p>This installer downloads the helper, asks for your enrollment key, installs Syncantinote.app, and configures startup sync on login.</p>
+
+    <a class="cta" href="/syncantinote/install.command">Download Installer (.command)</a>
+
+    <p>If your browser warns about the file type, keep the file and run it from Terminal:</p>
+    <div class="code">chmod +x ~/Downloads/SyncantinoteInstaller.command && ~/Downloads/SyncantinoteInstaller.command</div>
+
+    <p>The installer will:</p>
+    <ol>
+      <li>Prompt you for the enrollment key.</li>
+      <li>Download the latest helper from GitHub.</li>
+      <li>Create Syncantinote.app in ~/Applications.</li>
+      <li>Configure startup launch so sync runs automatically after login.</li>
+    </ol>
+  </main>
+</body>
+</html>

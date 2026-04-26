@@ -22,6 +22,22 @@ HELPER_DB_PATH="${SYNCANTINOTE_HELPER_DB_PATH:-$HOME/Library/Application Support
 POLL_INTERVAL_MS="${SYNCANTINOTE_POLL_INTERVAL_MS:-30000}"
 ENROLLMENT_KEY="${SYNCANTINOTE_ENROLLMENT_KEY:-}"
 
+prompt_enrollment_key() {
+  osascript <<'APPLESCRIPT'
+set keyValue to text returned of (display dialog "Enter your Syncantinote enrollment key:" default answer "" with hidden answer buttons {"Cancel", "Continue"} default button "Continue")
+return keyValue
+APPLESCRIPT
+}
+
+if [[ -z "${ENROLLMENT_KEY}" ]]; then
+  ENROLLMENT_KEY="$(prompt_enrollment_key || true)"
+fi
+
+if [[ -z "${ENROLLMENT_KEY}" ]]; then
+  echo "Enrollment key is required."
+  exit 1
+fi
+
 if [[ ! -f "${ANTINOTE_DB_PATH}" ]]; then
   echo "Antinote DB not found at: ${ANTINOTE_DB_PATH}"
   echo "Set SYNCANTINOTE_ANTINOTE_DB_PATH and run again."
@@ -43,7 +59,11 @@ TOKEN="$("${REPO_ROOT}/scripts/enroll_device.sh")"
 CONFIG_DIR="$HOME/Library/Application Support/AntinoteSync"
 LOG_DIR="$HOME/Library/Logs/Syncantinote"
 PLIST_PATH="$HOME/Library/LaunchAgents/com.feisio.syncantinote.helper.plist"
-mkdir -p "${CONFIG_DIR}" "${LOG_DIR}" "$HOME/Library/LaunchAgents"
+APP_DIR="$HOME/Applications/Syncantinote.app"
+APP_CONTENTS_DIR="${APP_DIR}/Contents"
+APP_MACOS_DIR="${APP_CONTENTS_DIR}/MacOS"
+APP_BIN="${APP_MACOS_DIR}/Syncantinote"
+mkdir -p "${CONFIG_DIR}" "${LOG_DIR}" "$HOME/Library/LaunchAgents" "$APP_MACOS_DIR"
 
 ENV_FILE="${CONFIG_DIR}/helper.env"
 cat > "${ENV_FILE}" <<EOF
@@ -57,6 +77,42 @@ SYNCANTINOTE_POLL_INTERVAL_MS=${POLL_INTERVAL_MS}
 EOF
 chmod 600 "${ENV_FILE}"
 
+cat > "${APP_CONTENTS_DIR}/Info.plist" <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>CFBundleExecutable</key>
+    <string>Syncantinote</string>
+    <key>CFBundleIdentifier</key>
+    <string>com.feisio.syncantinote.app</string>
+    <key>CFBundleName</key>
+    <string>Syncantinote</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    <key>CFBundleShortVersionString</key>
+    <string>1.0</string>
+    <key>LSUIElement</key>
+    <true/>
+  </dict>
+</plist>
+EOF
+
+cat > "${APP_BIN}" <<EOF
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [[ -f "$HOME/Library/Application Support/AntinoteSync/helper.env" ]]; then
+  set -a
+  # shellcheck disable=SC1090
+  source "$HOME/Library/Application Support/AntinoteSync/helper.env"
+  set +a
+fi
+
+exec "${NODE_BIN}" "${REPO_ROOT}/apps/helper/dist/index.js"
+EOF
+chmod +x "${APP_BIN}"
+
 cat > "${PLIST_PATH}" <<EOF
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -67,8 +123,7 @@ cat > "${PLIST_PATH}" <<EOF
 
     <key>ProgramArguments</key>
     <array>
-      <string>${NODE_BIN}</string>
-      <string>${REPO_ROOT}/apps/helper/dist/index.js</string>
+      <string>${APP_BIN}</string>
     </array>
 
     <key>WorkingDirectory</key>
@@ -126,4 +181,5 @@ SYNCANTINOTE_POLL_INTERVAL_MS="${POLL_INTERVAL_MS}" \
 
 echo "Syncantinote helper installed and running."
 echo "Device ID: ${DEVICE_ID}"
+echo "App: ${APP_DIR}"
 echo "Logs: ${LOG_DIR}/helper.out.log and ${LOG_DIR}/helper.err.log"

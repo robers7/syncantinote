@@ -25,6 +25,7 @@ This safely:
 - validates (`nginx -t`) and reloads Nginx
 
 The include is path-scoped to `/feisiomark` so existing apps remain unaffected.
+It also exposes the hosted installer at `/syncantinote`.
 
 Manual equivalent (if needed) is to include `deploy/nginx/syncantinote.location.conf` in existing server blocks for:
 
@@ -54,17 +55,16 @@ This pushes code then SSHes to VPS, pulls latest, builds, restarts service, and 
 
 After server + nginx are live, run on a real Mac with Antinote installed:
 
-1. Clone/pull this repository.
-2. If server enrollment key is enabled on VPS, export it first:
-   - `export SYNCANTINOTE_ENROLLMENT_KEY="..."`
-3. Install and start helper:
-   - `./scripts/install_helper_mac.sh`
+1. Open `https://feisio.com/syncantinote/`.
+2. Download and run `SyncantinoteInstaller.command`.
+3. Enter enrollment key when prompted.
 
 What it does:
 
-- builds helper workspace
+- downloads helper workspace from GitHub
 - enrolls device via `POST /auth/device`
 - writes helper config to `~/Library/Application Support/AntinoteSync/helper.env`
+- installs `~/Applications/Syncantinote.app`
 - installs LaunchAgent at `~/Library/LaunchAgents/com.feisio.syncantinote.helper.plist`
 - runs immediate `--once` sync so first push starts immediately
 
