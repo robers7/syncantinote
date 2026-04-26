@@ -22,7 +22,7 @@ sudo systemctl restart syncantinote-server.service
 sudo systemctl status syncantinote-server.service --no-pager --lines=20 || true
 
 echo "Running local health check..."
-if ! curl -fsS "http://127.0.0.1:3177/health" | cat; then
+if ! curl --retry 12 --retry-connrefused --retry-delay 1 -fsS "http://127.0.0.1:3177/health" | cat; then
   echo "Health check failed. Recent logs:"
   sudo journalctl -u syncantinote-server.service --no-pager -n 80
   exit 1
