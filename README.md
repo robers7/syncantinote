@@ -57,3 +57,4 @@ Manual repository-based fallback:
 - run: `./scripts/install_helper_mac.sh`
 
 This bootstrap downloads the helper, performs device enrollment, writes local helper config, installs `Syncantinote.app`, installs a launch agent, and triggers an immediate one-shot sync push.
+It assumes Antinote uses its standard database location: `~/Library/Application Support/Antinote/notes.sqlite3`.

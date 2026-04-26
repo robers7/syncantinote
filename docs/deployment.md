@@ -63,6 +63,7 @@ What it does:
 
 - downloads helper workspace from GitHub
 - enrolls device via `POST /auth/device`
+- assumes Antinote DB path at `~/Library/Application Support/Antinote/notes.sqlite3`
 - writes helper config to `~/Library/Application Support/AntinoteSync/helper.env`
 - installs `~/Applications/Syncantinote.app`
 - installs LaunchAgent at `~/Library/LaunchAgents/com.feisio.syncantinote.helper.plist`

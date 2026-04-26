@@ -17,7 +17,7 @@ API_BASE_URL="${SYNCANTINOTE_API_BASE_URL:-https://feisio.com/feisiomark/api}"
 DEVICE_NAME="${SYNCANTINOTE_DEVICE_NAME:-$(scutil --get ComputerName 2>/dev/null || hostname)}"
 DEVICE_ID_DEFAULT="$(echo "${DEVICE_NAME}" | tr '[:upper:]' '[:lower:]' | tr -cs 'a-z0-9' '-' | sed 's/^-//;s/-$//')"
 DEVICE_ID="${SYNCANTINOTE_DEVICE_ID:-${DEVICE_ID_DEFAULT}}"
-ANTINOTE_DB_PATH="${SYNCANTINOTE_ANTINOTE_DB_PATH:-$HOME/Library/Application Support/Antinote/notes.sqlite3}"
+ANTINOTE_DB_PATH="$HOME/Library/Application Support/Antinote/notes.sqlite3"
 HELPER_DB_PATH="${SYNCANTINOTE_HELPER_DB_PATH:-$HOME/Library/Application Support/AntinoteSync/sync_state.sqlite3}"
 POLL_INTERVAL_MS="${SYNCANTINOTE_POLL_INTERVAL_MS:-30000}"
 ENROLLMENT_KEY="${SYNCANTINOTE_ENROLLMENT_KEY:-}"
@@ -40,7 +40,7 @@ fi
 
 if [[ ! -f "${ANTINOTE_DB_PATH}" ]]; then
   echo "Antinote DB not found at: ${ANTINOTE_DB_PATH}"
-  echo "Set SYNCANTINOTE_ANTINOTE_DB_PATH and run again."
+  echo "Install Antinote first, then run the installer again."
   exit 1
 fi
 
