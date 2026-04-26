@@ -13,7 +13,19 @@
 
 ## 2. Nginx integration
 
-Include `deploy/nginx/syncantinote.location.conf` in existing server blocks for:
+Run from dev machine:
+
+- `./scripts/configure_nginx_vps.sh`
+
+This safely:
+
+- installs `deploy/nginx/syncantinote.location.conf` to `/etc/nginx/snippets/`
+- inserts include lines into existing TLS server blocks for `feisio.com` and `feisio.co.uk`
+- validates (`nginx -t`) and reloads Nginx
+
+The include is path-scoped to `/feisiomark` so existing apps remain unaffected.
+
+Manual equivalent (if needed) is to include `deploy/nginx/syncantinote.location.conf` in existing server blocks for:
 
 - `feisio.com`
 - `feisio.co.uk`
