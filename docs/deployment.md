@@ -21,6 +21,7 @@ This safely:
 
 - installs `deploy/nginx/syncantinote.location.conf` to `/etc/nginx/snippets/`
 - inserts include lines into existing TLS server blocks for `feisio.com` and `feisio.co.uk`
+- writes editable backups to `/var/backups/nginx-sites-enabled/`
 - validates (`nginx -t`) and reloads Nginx
 
 The include is path-scoped to `/feisiomark` so existing apps remain unaffected.
