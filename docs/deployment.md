@@ -2,16 +2,14 @@
 
 ## 1. One-time VPS setup
 
-1. Create app directories:
+1. Run bootstrap script from dev machine:
+   - `./scripts/bootstrap_vps.sh`
+2. Script creates required directories and installs systemd unit:
    - `/srv/apps/syncantinote`
    - `/var/lib/syncantinote`
-   - `/etc/syncantinote`
-2. Clone repository into `/srv/apps/syncantinote`.
-3. Create `/etc/syncantinote/server.env` based on `.env.example` server vars.
-4. Copy `deploy/systemd/syncantinote-server.service` to `/etc/systemd/system/`.
-5. Reload and enable service:
-   - `sudo systemctl daemon-reload`
-   - `sudo systemctl enable --now syncantinote-server.service`
+   - `/etc/syncantinote/server.env`
+3. Confirm the unit exists:
+   - `sudo systemctl status syncantinote-server.service`
 
 ## 2. Nginx integration
 

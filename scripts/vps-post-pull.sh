@@ -6,6 +6,10 @@ if [[ ! -f package.json ]]; then
   exit 1
 fi
 
+echo "Ensuring runtime directories are ready..."
+sudo mkdir -p /var/lib/syncantinote /etc/syncantinote
+sudo chown -R devops:devops /var/lib/syncantinote
+
 echo "Installing dependencies..."
 npm ci
 
@@ -18,6 +22,10 @@ sudo systemctl restart syncantinote-server.service
 sudo systemctl status syncantinote-server.service --no-pager --lines=20 || true
 
 echo "Running local health check..."
-curl -fsS "http://127.0.0.1:3177/health" | cat
+if ! curl -fsS "http://127.0.0.1:3177/health" | cat; then
+  echo "Health check failed. Recent logs:"
+  sudo journalctl -u syncantinote-server.service --no-pager -n 80
+  exit 1
+fi
 
 echo "VPS post-pull completed."
