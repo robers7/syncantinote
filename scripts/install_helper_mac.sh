@@ -6,7 +6,7 @@ usage() {
 Usage: ./scripts/install_helper_mac.sh [-p "<Application Support folder>"]
 
 -p  Base folder that contains Antinote and AntinoteSync subfolders.
-    Default: ~/Library/Application Support
+    Default: ~/Library/Containers/com.chabomakers.Antinote/Data/Library/Application Support
 EOF
 }
 
@@ -15,7 +15,7 @@ if [[ "$(uname -s)" != "Darwin" ]]; then
   exit 1
 fi
 
-APP_SUPPORT_DIR="$HOME/Library/Application Support"
+APP_SUPPORT_DIR="$HOME/Library/Containers/com.chabomakers.Antinote/Data/Library/Application Support"
 while getopts ":p:h" opt; do
   case "${opt}" in
     p)
@@ -91,7 +91,7 @@ export SYNCANTINOTE_DEVICE_NAME="${DEVICE_NAME}"
 export SYNCANTINOTE_ENROLLMENT_KEY="${ENROLLMENT_KEY}"
 TOKEN="$("${REPO_ROOT}/scripts/enroll_device.sh")"
 
-CONFIG_DIR="$HOME/Library/Application Support/AntinoteSync"
+CONFIG_DIR="${APP_SUPPORT_DIR}/AntinoteSync"
 LOG_DIR="$HOME/Library/Logs/Syncantinote"
 PLIST_PATH="$HOME/Library/LaunchAgents/com.feisio.syncantinote.helper.plist"
 APP_DIR="$HOME/Applications/Syncantinote.app"

@@ -61,4 +61,4 @@ Manual repository-based fallback:
 - run: `./scripts/install_helper_mac.sh`
 
 This bootstrap downloads the helper, performs device enrollment, writes local helper config, installs `Syncantinote.app`, installs a launch agent, and triggers an immediate one-shot sync push.
-By default it uses `~/Library/Application Support` as the base folder.
+By default it uses `~/Library/Containers/com.chabomakers.Antinote/Data/Library/Application Support` as the base folder.

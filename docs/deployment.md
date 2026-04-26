@@ -64,9 +64,9 @@ What it does:
 
 - downloads helper workspace from GitHub
 - enrolls device via `POST /auth/device`
-- uses `~/Library/Application Support` as default base folder
+- uses `~/Library/Containers/com.chabomakers.Antinote/Data/Library/Application Support` as default base folder
 - supports `-p "<folder>"` to use a different base folder
-- writes helper config to `~/Library/Application Support/AntinoteSync/helper.env`
+- writes helper config to `<base-folder>/AntinoteSync/helper.env`
 - installs `~/Applications/Syncantinote.app`
 - installs LaunchAgent at `~/Library/LaunchAgents/com.feisio.syncantinote.helper.plist`
 - runs immediate `--once` sync so first push starts immediately

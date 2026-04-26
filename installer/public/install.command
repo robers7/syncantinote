@@ -6,7 +6,7 @@ usage() {
 Usage: SyncantinoteInstaller.command [-p "<Application Support folder>"]
 
 -p  Base folder that contains Antinote and AntinoteSync subfolders.
-    Default: ~/Library/Application Support
+    Default: ~/Library/Containers/com.chabomakers.Antinote/Data/Library/Application Support
 EOF
 }
 
@@ -15,7 +15,7 @@ if [[ "$(uname -s)" != "Darwin" ]]; then
   exit 1
 fi
 
-APP_SUPPORT_DIR="$HOME/Library/Application Support"
+APP_SUPPORT_DIR="$HOME/Library/Containers/com.chabomakers.Antinote/Data/Library/Application Support"
 while getopts ":p:h" opt; do
   case "${opt}" in
     p)
