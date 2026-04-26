@@ -34,3 +34,16 @@ All production deployment is pull-based via GitHub:
 ## Safety
 
 Nginx and service templates are isolated for `/feisiomark` path to avoid impact on other VPS apps.
+
+## Stage 1 quickstart (first real Mac)
+
+1. Ensure VPS is deployed and healthy:
+	- `https://feisio.com/feisiomark/health`
+2. On the Mac that has Antinote:
+	- optional if configured on server: `export SYNCANTINOTE_ENROLLMENT_KEY="..."`
+	- run: `./scripts/install_helper_mac.sh`
+3. Verify helper logs:
+	- `~/Library/Logs/Syncantinote/helper.out.log`
+	- `~/Library/Logs/Syncantinote/helper.err.log`
+
+This bootstrap performs device enrollment, writes local helper config, installs a launch agent, and triggers an immediate one-shot sync push.

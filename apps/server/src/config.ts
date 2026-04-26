@@ -7,6 +7,7 @@ export interface ServerConfig {
   port: number;
   dbPath: string;
   tokenSalt: string;
+  enrollmentKey: string | null;
 }
 
 function envOrDefault(name: string, fallback: string): string {
@@ -22,10 +23,13 @@ function mustEnv(name: string, fallback?: string): string {
 }
 
 export function loadConfig(): ServerConfig {
+  const enrollmentKey = process.env.SYNCANTINOTE_ENROLLMENT_KEY?.trim() ?? "";
+
   return {
     host: envOrDefault("SYNCANTINOTE_SERVER_HOST", "127.0.0.1"),
     port: Number(envOrDefault("SYNCANTINOTE_SERVER_PORT", "3177")),
     dbPath: mustEnv("SYNCANTINOTE_SERVER_DB_PATH", "/var/lib/syncantinote/server.sqlite3"),
-    tokenSalt: mustEnv("SYNCANTINOTE_TOKEN_SALT", "replace-me")
+    tokenSalt: mustEnv("SYNCANTINOTE_TOKEN_SALT", "replace-me"),
+    enrollmentKey: enrollmentKey || null
   };
 }

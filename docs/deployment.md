@@ -50,7 +50,29 @@ Or single command:
 
 This pushes code then SSHes to VPS, pulls latest, builds, restarts service, and runs health check.
 
-## 4. Safety checks
+## 4. Stage 1 helper enrollment and install (macOS)
+
+After server + nginx are live, run on a real Mac with Antinote installed:
+
+1. Clone/pull this repository.
+2. If server enrollment key is enabled on VPS, export it first:
+   - `export SYNCANTINOTE_ENROLLMENT_KEY="..."`
+3. Install and start helper:
+   - `./scripts/install_helper_mac.sh`
+
+What it does:
+
+- builds helper workspace
+- enrolls device via `POST /auth/device`
+- writes helper config to `~/Library/Application Support/AntinoteSync/helper.env`
+- installs LaunchAgent at `~/Library/LaunchAgents/com.feisio.syncantinote.helper.plist`
+- runs immediate `--once` sync so first push starts immediately
+
+Manual enrollment token only (without installer):
+
+- `./scripts/enroll_device.sh <device_id> <device_name>`
+
+## 5. Safety checks
 
 - Confirm app endpoint: `https://feisio.com/feisiomark/health`
 - Confirm service: `sudo systemctl status syncantinote-server.service`

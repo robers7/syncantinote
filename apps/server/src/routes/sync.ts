@@ -23,6 +23,21 @@ function toIsoNow(): string {
   return new Date().toISOString();
 }
 
+function hasValidEnrollmentKey(request: FastifyRequest, config: ServerConfig): boolean {
+  if (!config.enrollmentKey) {
+    return true;
+  }
+
+  const candidate = request.headers["x-syncantinote-enrollment-key"];
+  if (typeof candidate === "string") {
+    return candidate === config.enrollmentKey;
+  }
+  if (Array.isArray(candidate)) {
+    return candidate.includes(config.enrollmentKey);
+  }
+  return false;
+}
+
 function parsePushBody(body: unknown): PushRequestBody {
   if (!body || typeof body !== "object") {
     throw new Error("Invalid push body");
@@ -76,6 +91,10 @@ export async function registerSyncRoutes(
   config: ServerConfig
 ): Promise<void> {
   app.post("/auth/device", async (request: FastifyRequest, reply: FastifyReply) => {
+    if (!hasValidEnrollmentKey(request, config)) {
+      return reply.code(401).send({ error: "Invalid enrollment key" });
+    }
+
     const body = request.body as { device_id?: string; device_name?: string };
     if (!body?.device_id || !body?.device_name) {
       return reply.code(400).send({ error: "device_id and device_name are required" });

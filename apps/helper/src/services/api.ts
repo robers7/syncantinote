@@ -19,7 +19,7 @@ interface PullResponse {
   changes: PullChange[];
 }
 
-function authHeaders(config: HelperConfig): HeadersInit {
+function authHeaders(config: HelperConfig): Record<string, string> {
   return {
     "Content-Type": "application/json",
     Authorization: `Bearer ${config.apiToken}`

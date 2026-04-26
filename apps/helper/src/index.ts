@@ -2,9 +2,14 @@ import { loadConfig } from "./config.js";
 import { openHelperDatabase } from "./db/database.js";
 import { runSyncIteration } from "./services/syncEngine.js";
 
+function shouldRunOnce(argv: string[]): boolean {
+  return argv.includes("--once") || process.env.SYNCANTINOTE_RUN_ONCE === "1";
+}
+
 async function main(): Promise<void> {
   const config = loadConfig();
   const db = openHelperDatabase(config.helperDbPath);
+  const runOnce = shouldRunOnce(process.argv.slice(2));
 
   console.log(`[syncantinote-helper] started for device ${config.deviceId}`);
 
@@ -18,6 +23,12 @@ async function main(): Promise<void> {
   };
 
   await run();
+
+  if (runOnce) {
+    console.log("[syncantinote-helper] run-once mode complete");
+    return;
+  }
+
   setInterval(() => {
     void run();
   }, config.pollIntervalMs);
