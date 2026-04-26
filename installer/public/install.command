@@ -41,6 +41,32 @@ shift $((OPTIND - 1))
 
 APP_SUPPORT_DIR="${APP_SUPPORT_DIR%/}"
 
+choose_app_support_dir() {
+  local default_dir="$1"
+
+  if [[ -d "${default_dir}" ]]; then
+    osascript - "${default_dir}" <<'APPLESCRIPT'
+on run argv
+  set startPath to item 1 of argv
+  set selectedFolder to choose folder with prompt "Grant Syncantinote access to the Antinote Application Support folder:" default location (POSIX file startPath)
+  return POSIX path of selectedFolder
+end run
+APPLESCRIPT
+  else
+    osascript <<'APPLESCRIPT'
+set selectedFolder to choose folder with prompt "Select the Antinote Application Support folder for Syncantinote:"
+return POSIX path of selectedFolder
+APPLESCRIPT
+  fi
+}
+
+APP_SUPPORT_DIR="$(choose_app_support_dir "${APP_SUPPORT_DIR}" || true)"
+APP_SUPPORT_DIR="${APP_SUPPORT_DIR%/}"
+if [[ -z "${APP_SUPPORT_DIR}" ]]; then
+  echo "Folder access is required to continue installation."
+  exit 1
+fi
+
 ask_key() {
   local value
   value="$(osascript <<'APPLESCRIPT'

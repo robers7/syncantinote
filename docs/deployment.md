@@ -56,9 +56,10 @@ This pushes code then SSHes to VPS, pulls latest, builds, restarts service, and 
 After server + nginx are live, run on a real Mac with Antinote installed:
 
 1. Open `https://feisio.com/syncantinote/`.
-2. Download and run `SyncantinoteInstaller.command`.
+2. Download to Downloads and run `SyncantinoteInstaller.command` from Finder.
 3. Enter enrollment key when prompted.
-4. Optional: pass `-p` to use a different Application Support base folder.
+4. Approve folder-access and admin prompts when shown.
+5. Optional: pass `-p` to use a different Application Support base folder.
 
 What it does:
 
@@ -67,7 +68,7 @@ What it does:
 - uses `~/Library/Containers/com.chabomakers.Antinote/Data/Library/Application Support` as default base folder
 - supports `-p "<folder>"` to use a different base folder
 - writes helper config to `<base-folder>/AntinoteSync/helper.env`
-- installs `~/Applications/Syncantinote.app`
+- installs `/Applications/Syncantinote.app`
 - installs LaunchAgent at `~/Library/LaunchAgents/com.feisio.syncantinote.helper.plist`
 - runs as a menu bar app with a single `Close` option to exit
 - starts helper sync immediately

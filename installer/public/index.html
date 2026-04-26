@@ -75,7 +75,7 @@
 <body>
   <main class="card">
     <h1>Syncantinote Installer for macOS</h1>
-    <p>This installer downloads the helper, asks for your enrollment key, installs Syncantinote.app, and configures startup sync on login.</p>
+    <p>This installer is designed to run directly from Downloads in Finder. It asks for your enrollment key, requests folder access as needed, installs Syncantinote.app, and configures startup sync on login.</p>
 
     <a class="cta" href="/syncantinote/install.command">Download Installer (.command)</a>
 
@@ -85,8 +85,9 @@
     <p>The installer will:</p>
     <ol>
       <li>Prompt you for the enrollment key.</li>
+      <li>Prompt for access to the Antinote Application Support folder.</li>
       <li>Download the latest helper from GitHub.</li>
-      <li>Create Syncantinote.app in ~/Applications.</li>
+      <li>Create Syncantinote.app in /Applications.</li>
       <li>Configure startup launch so sync runs automatically after login.</li>
       <li>Show a menu bar icon while running, with a single Close option to exit.</li>
     </ol>

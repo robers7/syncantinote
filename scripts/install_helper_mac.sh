@@ -70,6 +70,16 @@ return keyValue
 APPLESCRIPT
 }
 
+run_with_admin() {
+  local command="$1"
+  osascript - "$command" <<'APPLESCRIPT'
+on run argv
+  set shellCommand to item 1 of argv
+  do shell script shellCommand with administrator privileges
+end run
+APPLESCRIPT
+}
+
 if [[ -z "${ENROLLMENT_KEY}" ]]; then
   ENROLLMENT_KEY="$(prompt_enrollment_key || true)"
 fi
@@ -100,11 +110,15 @@ TOKEN="$("${REPO_ROOT}/scripts/enroll_device.sh")"
 CONFIG_DIR="${APP_SUPPORT_DIR}/AntinoteSync"
 LOG_DIR="$HOME/Library/Logs/Syncantinote"
 PLIST_PATH="$HOME/Library/LaunchAgents/com.feisio.syncantinote.helper.plist"
-APP_DIR="$HOME/Applications/Syncantinote.app"
+APP_DIR="/Applications/Syncantinote.app"
 APP_CONTENTS_DIR="${APP_DIR}/Contents"
 APP_MACOS_DIR="${APP_CONTENTS_DIR}/MacOS"
 APP_BIN="${APP_MACOS_DIR}/Syncantinote"
-mkdir -p "${CONFIG_DIR}" "${LOG_DIR}" "$HOME/Library/LaunchAgents" "$APP_MACOS_DIR"
+APP_STAGE_DIR="${CONFIG_DIR}/Syncantinote.app"
+APP_STAGE_CONTENTS_DIR="${APP_STAGE_DIR}/Contents"
+APP_STAGE_MACOS_DIR="${APP_STAGE_CONTENTS_DIR}/MacOS"
+APP_STAGE_BIN="${APP_STAGE_MACOS_DIR}/Syncantinote"
+mkdir -p "${CONFIG_DIR}" "${LOG_DIR}" "$HOME/Library/LaunchAgents" "$APP_STAGE_MACOS_DIR"
 
 ENV_FILE="${CONFIG_DIR}/helper.env"
 cat > "${ENV_FILE}" <<EOF
@@ -118,7 +132,7 @@ SYNCANTINOTE_POLL_INTERVAL_MS=${POLL_INTERVAL_MS}
 EOF
 chmod 600 "${ENV_FILE}"
 
-cat > "${APP_CONTENTS_DIR}/Info.plist" <<EOF
+cat > "${APP_STAGE_CONTENTS_DIR}/Info.plist" <<EOF
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
@@ -292,8 +306,17 @@ app.delegate = delegate
 app.run()
 EOF
 
-swiftc -O -framework AppKit "${SWIFT_SOURCE}" -o "${APP_BIN}"
-chmod +x "${APP_BIN}"
+swiftc -O -framework AppKit "${SWIFT_SOURCE}" -o "${APP_STAGE_BIN}"
+chmod +x "${APP_STAGE_BIN}"
+
+if [[ -w "/Applications" ]]; then
+  rm -rf "${APP_DIR}"
+  cp -R "${APP_STAGE_DIR}" "${APP_DIR}"
+else
+  run_with_admin "rm -rf \"${APP_DIR}\" && cp -R \"${APP_STAGE_DIR}\" \"${APP_DIR}\""
+fi
+
+rm -rf "${APP_STAGE_DIR}"
 
 cat > "${PLIST_PATH}" <<EOF
 <?xml version="1.0" encoding="UTF-8"?>

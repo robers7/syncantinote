@@ -41,9 +41,10 @@ Nginx and service templates are isolated for `/feisiomark` path to avoid impact 
   - `https://feisio.com/feisiomark/health`
 2. Open the hosted installer page:
   - `https://feisio.com/syncantinote/`
-3. Download and run `SyncantinoteInstaller.command`.
+3. Download `SyncantinoteInstaller.command` to Downloads and double-click it in Finder.
 4. Enter the enrollment key when prompted.
-5. Verify helper logs:
+5. Approve folder-access and admin prompts during install.
+6. Verify helper logs:
   - `~/Library/Logs/Syncantinote/helper.out.log`
   - `~/Library/Logs/Syncantinote/helper.err.log`
 
@@ -60,6 +61,6 @@ Manual repository-based fallback:
 - optional if configured on server: `export SYNCANTINOTE_ENROLLMENT_KEY="..."`
 - run: `./scripts/install_helper_mac.sh`
 
-This bootstrap downloads the helper, performs device enrollment, writes local helper config, installs `Syncantinote.app`, installs a launch agent, and starts helper sync immediately.
+This bootstrap downloads the helper, performs device enrollment, writes local helper config, installs `Syncantinote.app` in `/Applications`, installs a launch agent, and starts helper sync immediately.
 By default it uses `~/Library/Containers/com.chabomakers.Antinote/Data/Library/Application Support` as the base folder.
 When running, Syncantinote shows a menu bar icon with one option: `Close` (which exits helper + app).
