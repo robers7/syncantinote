@@ -41,7 +41,7 @@ Nginx and service templates are isolated for `/feisiomark` path to avoid impact 
   - `https://feisio.com/feisiomark/health`
 2. Open the hosted installer page:
   - `https://feisio.com/syncantinote/`
-3. Download `SyncantinoteInstaller.command` to Downloads and double-click it in Finder.
+3. Download `SyncantinoteInstaller.zip` to Downloads, unzip it, then double-click `SyncantinoteInstaller.command` in Finder.
 4. Enter the enrollment key when prompted.
 5. Approve folder-access and admin prompts during install.
 6. Verify helper logs:

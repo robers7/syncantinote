@@ -56,10 +56,11 @@ This pushes code then SSHes to VPS, pulls latest, builds, restarts service, and 
 After server + nginx are live, run on a real Mac with Antinote installed:
 
 1. Open `https://feisio.com/syncantinote/`.
-2. Download to Downloads and run `SyncantinoteInstaller.command` from Finder.
-3. Enter enrollment key when prompted.
-4. Approve folder-access and admin prompts when shown.
-5. Optional: pass `-p` to use a different Application Support base folder.
+2. Download `SyncantinoteInstaller.zip` to Downloads.
+3. Unzip it and run `SyncantinoteInstaller.command` from Finder.
+4. Enter enrollment key when prompted.
+5. Approve folder-access and admin prompts when shown.
+6. Optional: pass `-p` to use a different Application Support base folder.
 
 What it does:
 

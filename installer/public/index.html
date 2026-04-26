@@ -53,6 +53,13 @@
       padding: 12px 18px;
       border-radius: 10px;
     }
+    .cta-secondary {
+      display: inline-block;
+      margin-left: 10px;
+      color: var(--muted);
+      text-decoration: underline;
+      font-weight: 600;
+    }
     .code {
       margin-top: 14px;
       background: #0f1822;
@@ -77,10 +84,13 @@
     <h1>Syncantinote Installer for macOS</h1>
     <p>This installer is designed to run directly from Downloads in Finder. It asks for your enrollment key, requests folder access as needed, installs Syncantinote.app, and configures startup sync on login.</p>
 
-    <a class="cta" href="/syncantinote/install.command">Download Installer (.command)</a>
+    <a class="cta" href="/syncantinote/SyncantinoteInstaller.zip">Download Installer (.zip)</a>
+    <a class="cta-secondary" href="/syncantinote/install.command">Raw .command</a>
 
     <p>If your browser warns about the file type, keep the file and run it from Terminal:</p>
     <div class="code">chmod +x ~/Downloads/SyncantinoteInstaller.command && ~/Downloads/SyncantinoteInstaller.command</div>
+
+    <p>If Finder says the file is not executable, unzip the ZIP first and run the extracted <strong>SyncantinoteInstaller.command</strong>.</p>
 
     <p>The installer will:</p>
     <ol>
