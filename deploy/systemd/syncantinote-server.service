@@ -1,0 +1,15 @@
+[Unit]
+Description=Syncantinote API Server
+After=network.target
+
+[Service]
+Type=simple
+User=devops
+WorkingDirectory=/srv/apps/syncantinote
+EnvironmentFile=/etc/syncantinote/server.env
+ExecStart=/usr/bin/npm run --workspace apps/server start
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

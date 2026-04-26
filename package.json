@@ -1,0 +1,16 @@
+{
+  "name": "syncantinote",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "apps/server",
+    "apps/helper"
+  ],
+  "scripts": {
+    "build": "npm run -ws build",
+    "typecheck": "npm run -ws typecheck"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

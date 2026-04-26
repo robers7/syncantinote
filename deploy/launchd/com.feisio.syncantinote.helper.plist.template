@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>Label</key>
+    <string>com.feisio.syncantinote.helper</string>
+
+    <key>ProgramArguments</key>
+    <array>
+      <string>/usr/local/bin/node</string>
+      <string>/srv/apps/syncantinote/apps/helper/dist/index.js</string>
+    </array>
+
+    <key>RunAtLoad</key>
+    <true/>
+
+    <key>KeepAlive</key>
+    <true/>
+
+    <key>StandardOutPath</key>
+    <string>/tmp/syncantinote-helper.out.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>/tmp/syncantinote-helper.err.log</string>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+      <key>SYNCANTINOTE_DEVICE_ID</key>
+      <string>replace-device-id</string>
+      <key>SYNCANTINOTE_DEVICE_NAME</key>
+      <string>replace-device-name</string>
+      <key>SYNCANTINOTE_API_BASE_URL</key>
+      <string>https://feisio.com/feisiomark/api</string>
+      <key>SYNCANTINOTE_API_TOKEN</key>
+      <string>replace-device-token</string>
+      <key>SYNCANTINOTE_ANTINOTE_DB_PATH</key>
+      <string>/Users/replace-user/Library/Application Support/Antinote/notes.sqlite3</string>
+      <key>SYNCANTINOTE_HELPER_DB_PATH</key>
+      <string>/Users/replace-user/Library/Application Support/AntinoteSync/sync_state.sqlite3</string>
+      <key>SYNCANTINOTE_POLL_INTERVAL_MS</key>
+      <string>30000</string>
+    </dict>
+  </dict>
+</plist>
