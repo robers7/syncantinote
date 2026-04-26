@@ -1,10 +1,45 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+usage() {
+  cat <<'EOF'
+Usage: ./scripts/install_helper_mac.sh [-p "<Application Support folder>"]
+
+-p  Base folder that contains Antinote and AntinoteSync subfolders.
+    Default: ~/Library/Application Support
+EOF
+}
+
 if [[ "$(uname -s)" != "Darwin" ]]; then
   echo "This installer is for macOS only."
   exit 1
 fi
+
+APP_SUPPORT_DIR="$HOME/Library/Application Support"
+while getopts ":p:h" opt; do
+  case "${opt}" in
+    p)
+      APP_SUPPORT_DIR="${OPTARG}"
+      ;;
+    h)
+      usage
+      exit 0
+      ;;
+    :)
+      echo "Option -${OPTARG} requires a value."
+      usage
+      exit 1
+      ;;
+    ?)
+      echo "Unknown option: -${OPTARG}"
+      usage
+      exit 1
+      ;;
+  esac
+done
+shift $((OPTIND - 1))
+
+APP_SUPPORT_DIR="${APP_SUPPORT_DIR%/}"
 
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 NODE_BIN="${SYNCANTINOTE_NODE_BIN:-$(command -v node || true)}"
@@ -17,8 +52,8 @@ API_BASE_URL="${SYNCANTINOTE_API_BASE_URL:-https://feisio.com/feisiomark/api}"
 DEVICE_NAME="${SYNCANTINOTE_DEVICE_NAME:-$(scutil --get ComputerName 2>/dev/null || hostname)}"
 DEVICE_ID_DEFAULT="$(echo "${DEVICE_NAME}" | tr '[:upper:]' '[:lower:]' | tr -cs 'a-z0-9' '-' | sed 's/^-//;s/-$//')"
 DEVICE_ID="${SYNCANTINOTE_DEVICE_ID:-${DEVICE_ID_DEFAULT}}"
-ANTINOTE_DB_PATH="$HOME/Library/Application Support/Antinote/notes.sqlite3"
-HELPER_DB_PATH="${SYNCANTINOTE_HELPER_DB_PATH:-$HOME/Library/Application Support/AntinoteSync/sync_state.sqlite3}"
+ANTINOTE_DB_PATH="${APP_SUPPORT_DIR}/Antinote/notes.sqlite3"
+HELPER_DB_PATH="${APP_SUPPORT_DIR}/AntinoteSync/sync_state.sqlite3"
 POLL_INTERVAL_MS="${SYNCANTINOTE_POLL_INTERVAL_MS:-30000}"
 ENROLLMENT_KEY="${SYNCANTINOTE_ENROLLMENT_KEY:-}"
 
@@ -102,10 +137,10 @@ cat > "${APP_BIN}" <<EOF
 #!/usr/bin/env bash
 set -euo pipefail
 
-if [[ -f "$HOME/Library/Application Support/AntinoteSync/helper.env" ]]; then
+if [[ -f "${ENV_FILE}" ]]; then
   set -a
   # shellcheck disable=SC1090
-  source "$HOME/Library/Application Support/AntinoteSync/helper.env"
+  source "${ENV_FILE}"
   set +a
 fi
 
@@ -181,5 +216,6 @@ SYNCANTINOTE_POLL_INTERVAL_MS="${POLL_INTERVAL_MS}" \
 
 echo "Syncantinote helper installed and running."
 echo "Device ID: ${DEVICE_ID}"
+echo "Application Support base: ${APP_SUPPORT_DIR}"
 echo "App: ${APP_DIR}"
 echo "Logs: ${LOG_DIR}/helper.out.log and ${LOG_DIR}/helper.err.log"

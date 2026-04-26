@@ -58,12 +58,14 @@ After server + nginx are live, run on a real Mac with Antinote installed:
 1. Open `https://feisio.com/syncantinote/`.
 2. Download and run `SyncantinoteInstaller.command`.
 3. Enter enrollment key when prompted.
+4. Optional: pass `-p` to use a different Application Support base folder.
 
 What it does:
 
 - downloads helper workspace from GitHub
 - enrolls device via `POST /auth/device`
-- assumes Antinote DB path at `~/Library/Application Support/Antinote/notes.sqlite3`
+- uses `~/Library/Application Support` as default base folder
+- supports `-p "<folder>"` to use a different base folder
 - writes helper config to `~/Library/Application Support/AntinoteSync/helper.env`
 - installs `~/Applications/Syncantinote.app`
 - installs LaunchAgent at `~/Library/LaunchAgents/com.feisio.syncantinote.helper.plist`

@@ -51,10 +51,14 @@ Terminal alternative:
 
 - `curl -fsSL https://feisio.com/syncantinote/install.command -o ~/Downloads/SyncantinoteInstaller.command && chmod +x ~/Downloads/SyncantinoteInstaller.command && ~/Downloads/SyncantinoteInstaller.command`
 
+Optional custom Application Support base folder:
+
+- `~/Downloads/SyncantinoteInstaller.command -p "$HOME/SomeOtherApplicationSupport"`
+
 Manual repository-based fallback:
 
 - optional if configured on server: `export SYNCANTINOTE_ENROLLMENT_KEY="..."`
 - run: `./scripts/install_helper_mac.sh`
 
 This bootstrap downloads the helper, performs device enrollment, writes local helper config, installs `Syncantinote.app`, installs a launch agent, and triggers an immediate one-shot sync push.
-It assumes Antinote uses its standard database location: `~/Library/Application Support/Antinote/notes.sqlite3`.
+By default it uses `~/Library/Application Support` as the base folder.
