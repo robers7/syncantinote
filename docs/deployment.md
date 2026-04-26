@@ -69,7 +69,8 @@ What it does:
 - writes helper config to `<base-folder>/AntinoteSync/helper.env`
 - installs `~/Applications/Syncantinote.app`
 - installs LaunchAgent at `~/Library/LaunchAgents/com.feisio.syncantinote.helper.plist`
-- runs immediate `--once` sync so first push starts immediately
+- runs as a menu bar app with a single `Close` option to exit
+- starts helper sync immediately
 
 Manual enrollment token only (without installer):
 
